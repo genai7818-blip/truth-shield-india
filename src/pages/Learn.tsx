@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import LearnCard from "@/components/ui/learn-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,19 +13,36 @@ import {
   Target,
   Users,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Globe,
+  Filter,
+  Search,
+  RotateCcw,
+  Zap,
+  Star,
+  Play,
+  Languages
 } from "lucide-react";
 
 const Learn = () => {
+  const [language, setLanguage] = useState<"en" | "hi">("en");
+  const [completedCards, setCompletedCards] = useState<Set<number>>(new Set([0, 2]));
+  const [filterDifficulty, setFilterDifficulty] = useState<string>("all");
+
   const learnCards = [
     {
       type: "clickbait" as const,
       title: "Spotting Clickbait",
+      titleHi: "क्लिकबेट की पहचान",
       description: "Learn to identify sensationalized headlines designed to manipulate emotions and drive clicks without providing substantial information.",
+      descriptionHi: "भावनाओं को प्रभावित करने और बिना वास्तविक जानकारी के क्लिक बढ़ाने के लिए बनाए गए सनसनीखेज शीर्षकों को पहचानना सीखें।",
       example: {
         before: "SHOCKING: This One Trick Will Make You Rich Overnight! Doctors Hate This!",
+        beforeHi: "चौंकाने वाला: यह एक ट्रिक आपको रातों-रात अमीर बना देगी! डॉक्टर इससे नफरत करते हैं!",
         after: "Investment strategy article discusses long-term wealth building through diversified portfolios over 20+ years.",
-        explanation: "Clickbait uses emotional triggers, exaggerated claims, and curiosity gaps. Real news provides specific, verifiable information upfront."
+        afterHi: "निवेश रणनीति लेख 20+ वर्षों में विविधीकृत पोर्टफोलियो के माध्यम से दीर्घकालिक धन निर्माण पर चर्चा करता है।",
+        explanation: "Clickbait uses emotional triggers, exaggerated claims, and curiosity gaps. Real news provides specific, verifiable information upfront.",
+        explanationHi: "क्लिकबेट भावनात्मक ट्रिगर, अतिशयोक्ति और जिज्ञासा की खाई का उपयोग करता है। वास्तविक समाचार शुरुआत में ही स्पष्ट, सत्यापित जानकारी प्रदान करते हैं।"
       },
       difficulty: "beginner" as const,
       estimatedTime: "5 min"
@@ -32,11 +50,16 @@ const Learn = () => {
     {
       type: "false-context" as const,
       title: "False Context Detection",
+      titleHi: "गलत संदर्भ की पहचान",
       description: "Understand how real images or videos can be used in wrong contexts to spread misinformation about different events or places.",
+      descriptionHi: "समझें कि कैसे वास्तविक छवियों या वीडियो का उपयोग विभिन्न घटनाओं या स्थानों के बारे में गलत संदर्भ में गलत सूचना फैलाने के लिए किया जा सकता है।",
       example: {
         before: "Breaking: Massive protests in Delhi against new policy (shows crowd from 2019 farmer protests)",
+        beforeHi: "ब्रेकिंग: नई नीति के खिलाफ दिल्ली में बड़ा प्रदर्शन (2019 के किसान आंदोलन की भीड़ दिखाई गई)",
         after: "This image is from 2019 farmer protests, not current political demonstrations. Context verification is crucial.",
-        explanation: "False context manipulation reuses authentic content in misleading situations. Always verify when and where media was originally captured."
+        afterHi: "यह छवि 2019 के किसान प्रदर्शन की है, वर्तमान राजनीतिक प्रदर्शन की नहीं। संदर्भ सत्यापन महत्वपूर्ण है।",
+        explanation: "False context manipulation reuses authentic content in misleading situations. Always verify when and where media was originally captured.",
+        explanationHi: "गलत संदर्भ हेरफेर प्रामाणिक सामग्री को भ्रामक स्थितियों में फिर से उपयोग करता है। हमेशा सत्यापित करें कि मीडिया मूल रूप से कब और कहाँ कैप्चर किया गया था।"
       },
       difficulty: "intermediate" as const,
       estimatedTime: "8 min"
@@ -44,11 +67,16 @@ const Learn = () => {
     {
       type: "cherry-picked" as const,
       title: "Cherry-Picked Statistics",
+      titleHi: "चुनिंदा आंकड़े",
       description: "Recognize when data is selectively presented to support a narrative while ignoring contradictory evidence or broader context.",
+      descriptionHi: "पहचानें कि कब डेटा को चुनिंदा रूप से प्रस्तुत किया जाता है ताकि विरोधाभासी साक्ष्य या व्यापक संदर्भ को नजरअंदाज करके एक कहानी का समर्थन किया जा सके।",
       example: {
         before: "Crime in City X increased 300% last month! (comparing to unusually low February numbers)",
+        beforeHi: "शहर X में पिछले महीने अपराध 300% बढ़ गया! (असामान्य रूप से कम फरवरी के आंकड़ों से तुलना)",
         after: "Crime in City X shows seasonal variation; overall yearly trend remains stable when compared to historical averages.",
-        explanation: "Cherry-picking selects favorable data points while ignoring the full picture. Look for broader trends and comparative context."
+        afterHi: "शहर X में अपराध मौसमी भिन्नता दिखाता है; ऐतिहासिक औसत से तुलना करने पर समग्र वार्षिक रुझान स्थिर रहता है।",
+        explanation: "Cherry-picking selects favorable data points while ignoring the full picture. Look for broader trends and comparative context.",
+        explanationHi: "चेरी-पिकिंग पूरी तस्वीर को नजरअंदाज करते हुए अनुकूल डेटा बिंदुओं का चयन करती है। व्यापक रुझान और तुलनात्मक संदर्भ देखें।"
       },
       difficulty: "advanced" as const,
       estimatedTime: "12 min"
@@ -56,11 +84,16 @@ const Learn = () => {
     {
       type: "deepfake" as const,
       title: "Deepfake Awareness",
+      titleHi: "डीपफेक जागरूकता",
       description: "Learn to spot AI-generated or manipulated audio and video content that appears authentic but is artificially created.",
+      descriptionHi: "AI-जनरेटेड या हेरफेर किए गए ऑडियो और वीडियो सामग्री को पहचानना सीखें जो प्रामाणिक लगती है लेकिन कृत्रिम रूप से बनाई गई है।",
       example: {
         before: "Viral video of politician making controversial statement (AI-generated deepfake)",
+        beforeHi: "राजनेता का विवादास्पद बयान देते हुए वायरल वीडियो (AI-जनरेटेड डीपफेक)",
         after: "Technical analysis reveals inconsistent facial movements, lighting artifacts, and audio-visual sync issues typical of deepfakes.",
-        explanation: "Deepfakes use AI to create realistic but fake content. Look for technical inconsistencies, verify through multiple sources, and check timing."
+        afterHi: "तकनीकी विश्लेषण असंगत चेहरे की गतिविधियां, प्रकाश संबंधी समस्याएं, और डीपफेक की विशिष्ट ऑडियो-विजुअल सिंक समस्याओं को प्रकट करता है।",
+        explanation: "Deepfakes use AI to create realistic but fake content. Look for technical inconsistencies, verify through multiple sources, and check timing.",
+        explanationHi: "डीपफेक AI का उपयोग करके वास्तविक लेकिन नकली सामग्री बनाते हैं। तकनीकी असंगतियों को देखें, कई स्रोतों से सत्यापित करें, और समय की जांच करें।"
       },
       difficulty: "advanced" as const,
       estimatedTime: "15 min"
@@ -68,19 +101,63 @@ const Learn = () => {
   ];
 
   const learningStats = [
-    { icon: <BookOpen className="w-6 h-6" />, label: "Lessons Completed", value: "12/20", progress: 60 },
-    { icon: <Award className="w-6 h-6" />, label: "Badges Earned", value: "5", progress: 100 },
-    { icon: <TrendingUp className="w-6 h-6" />, label: "Detection Accuracy", value: "85%", progress: 85 },
-    { icon: <Target className="w-6 h-6" />, label: "Weekly Goal", value: "3/5", progress: 60 }
+    { 
+      icon: <BookOpen className="w-6 h-6" />, 
+      label: language === "hi" ? "पाठ पूर्ण" : "Lessons Completed", 
+      value: `${completedCards.size}/${learnCards.length}`, 
+      progress: (completedCards.size / learnCards.length) * 100 
+    },
+    { 
+      icon: <Award className="w-6 h-6" />, 
+      label: language === "hi" ? "बैज अर्जित" : "Badges Earned", 
+      value: "5", 
+      progress: 100 
+    },
+    { 
+      icon: <TrendingUp className="w-6 h-6" />, 
+      label: language === "hi" ? "पहचान सटीकता" : "Detection Accuracy", 
+      value: "85%", 
+      progress: 85 
+    },
+    { 
+      icon: <Target className="w-6 h-6" />, 
+      label: language === "hi" ? "साप्ताहिक लक्ष्य" : "Weekly Goal", 
+      value: "3/5", 
+      progress: 60 
+    }
   ];
 
   const achievements = [
-    { title: "Fact Checker", description: "Verified 10 pieces of content", earned: true },
-    { title: "Pattern Spotter", description: "Identified 5 manipulation techniques", earned: true },
-    { title: "Source Validator", description: "Cross-checked with 3 fact-checking sites", earned: true },
-    { title: "Community Helper", description: "Helped 5 users understand misinformation", earned: false },
-    { title: "Expert Analyst", description: "Achieved 90% detection accuracy", earned: false }
+    { 
+      title: language === "hi" ? "फैक्ट चेकर" : "Fact Checker", 
+      description: language === "hi" ? "10 सामग्री सत्यापित की" : "Verified 10 pieces of content", 
+      earned: true 
+    },
+    { 
+      title: language === "hi" ? "पैटर्न स्पॉटर" : "Pattern Spotter", 
+      description: language === "hi" ? "5 हेरफेर तकनीकों की पहचान की" : "Identified 5 manipulation techniques", 
+      earned: true 
+    },
+    { 
+      title: language === "hi" ? "स्रोत सत्यापनकर्ता" : "Source Validator", 
+      description: language === "hi" ? "3 फैक्ट-चेकिंग साइटों से जांच की" : "Cross-checked with 3 fact-checking sites", 
+      earned: true 
+    },
+    { 
+      title: language === "hi" ? "कम्युनिटी हेल्पर" : "Community Helper", 
+      description: language === "hi" ? "5 उपयोगकर्ताओं को गलत सूचना समझने में मदद की" : "Helped 5 users understand misinformation", 
+      earned: false 
+    },
+    { 
+      title: language === "hi" ? "विशेषज्ञ विश्लेषक" : "Expert Analyst", 
+      description: language === "hi" ? "90% पहचान सटीकता हासिल की" : "Achieved 90% detection accuracy", 
+      earned: false 
+    }
   ];
+
+  const filteredCards = filterDifficulty === "all" 
+    ? learnCards 
+    : learnCards.filter(card => card.difficulty === filterDifficulty);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -108,14 +185,29 @@ const Learn = () => {
         >
           <Badge className="mb-4 px-4 py-2 text-sm font-medium gradient-hero text-white">
             <Brain className="w-4 h-4 mr-2" />
-            Interactive Learning Hub
+            {language === "hi" ? "इंटरैक्टिव लर्निंग हब" : "Interactive Learning Hub"}
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Learn to Spot Misinformation
-          </h1>
+          
+          <div className="flex items-center justify-center mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold">
+              {language === "hi" ? "गलत सूचना की पहचान सीखें" : "Learn to Spot Misinformation"}
+            </h1>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+              className="ml-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            >
+              <Languages className="w-4 h-4 mr-2" />
+              {language === "en" ? "हिंदी" : "English"}
+            </Button>
+          </div>
+          
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Interactive cards that teach you manipulation techniques with real examples. 
-            Hover or click to flip and see the truth behind misleading content.
+            {language === "hi" 
+              ? "इंटरैक्टिव कार्ड जो आपको वास्तविक उदाहरणों के साथ हेरफेर तकनीकें सिखाते हैं। भ्रामक सामग्री के पीछे की सच्चाई देखने के लिए होवर करें या क्लिक करें।"
+              : "Interactive cards that teach you manipulation techniques with real examples. Hover or click to flip and see the truth behind misleading content."
+            }
           </p>
         </motion.div>
 
@@ -165,19 +257,69 @@ const Learn = () => {
           animate="visible"
         >
           <motion.div variants={itemVariants} className="mb-8">
-            <h2 className="text-3xl font-bold mb-4">Interactive Learn Cards</h2>
-            <p className="text-muted-foreground">
-              Click any card to flip and see real examples of manipulation techniques
-            </p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold mb-2">
+                  {language === "hi" ? "इंटरैक्टिव लर्न कार्ड" : "Interactive Learn Cards"}
+                </h2>
+                <p className="text-muted-foreground">
+                  {language === "hi" 
+                    ? "हेरफेर तकनीकों के वास्तविक उदाहरण देखने के लिए किसी भी कार्ड को क्लिक करें"
+                    : "Click any card to flip and see real examples of manipulation techniques"
+                  }
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
+                <div className="flex items-center space-x-2">
+                  <Filter className="w-4 h-4 text-muted-foreground" />
+                  <select
+                    value={filterDifficulty}
+                    onChange={(e) => setFilterDifficulty(e.target.value)}
+                    className="bg-background border border-border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="all">{language === "hi" ? "सभी स्तर" : "All Levels"}</option>
+                    <option value="beginner">{language === "hi" ? "आसान" : "Beginner"}</option>
+                    <option value="intermediate">{language === "hi" ? "मध्यम" : "Intermediate"}</option>
+                    <option value="advanced">{language === "hi" ? "कठिन" : "Advanced"}</option>
+                  </select>
+                </div>
+                
+                <Badge variant="outline" className="text-xs">
+                  <Star className="w-3 h-3 mr-1" />
+                  {completedCards.size}/{learnCards.length} {language === "hi" ? "पूर्ण" : "Complete"}
+                </Badge>
+              </div>
+            </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {learnCards.map((card, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <LearnCard {...card} />
-              </motion.div>
-            ))}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={filterDifficulty}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {filteredCards.map((card, index) => (
+                <motion.div 
+                  key={`${card.type}-${language}`} 
+                  variants={itemVariants}
+                  onClick={() => {
+                    const originalIndex = learnCards.findIndex(c => c.type === card.type);
+                    setCompletedCards(prev => new Set([...prev, originalIndex]));
+                  }}
+                >
+                  <LearnCard 
+                    {...card} 
+                    completed={completedCards.has(learnCards.findIndex(c => c.type === card.type))}
+                    language={language}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
 
         {/* Achievements Section */}

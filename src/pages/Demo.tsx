@@ -148,8 +148,11 @@ const Demo = () => {
             description="This forward uses multiple manipulation techniques to bypass critical thinking and encourage immediate sharing without verification."
             example={{
               before: "🚨 BREAKING NEWS: 100% FREE ELECTRICITY! Share IMMEDIATELY! Don't miss this opportunity! ⚡🔥",
+              beforeHi: "🚨 ब्रेकिंग न्यूज़: 100% मुफ्त बिजली! तुरंत शेयर करें! यह अवसर मत चूकें! ⚡🔥",
               after: "Delhi offers electricity subsidies up to 200 units for eligible residential consumers under specific terms and conditions.",
-              explanation: "The original uses ALL CAPS, urgency words, excessive emojis, and social pressure to create fear of missing out (FOMO). It also exaggerates partial truths to make them sound more dramatic and shareable."
+              afterHi: "दिल्ली विशिष्ट नियमों और शर्तों के तहत पात्र आवासीय उपभोक्ताओं को 200 यूनिट तक बिजली सब्सिडी प्रदान करती है।",
+              explanation: "The original uses ALL CAPS, urgency words, excessive emojis, and social pressure to create fear of missing out (FOMO). It also exaggerates partial truths to make them sound more dramatic and shareable.",
+              explanationHi: "मूल में बड़े अक्षर, तात्कालिकता के शब्द, अत्यधिक इमोजी और सामाजिक दबाव का उपयोग करके FOMO (छूटने का डर) पैदा किया गया है।"
             }}
             difficulty="intermediate"
             estimatedTime="3 min"
